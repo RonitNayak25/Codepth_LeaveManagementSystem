@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import UserRegisterForm
+from .forms import UserRegisterForm, StudentForm
 from django.contrib import messages
 from rest_framework.decorators import api_view
 from .models import Leave
@@ -28,7 +28,16 @@ def register(request):
 
 @login_required(login_url='login/')
 def index(request):
-    return render(request, 'MyApp/base.html')
+    form = StudentForm()
+    if request.method == 'POST':
+        form = StudentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+    context = {
+        'form': form
+    }
+    return render(request, 'MyApp/home.html', context)
 
 
 class LeaveCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
