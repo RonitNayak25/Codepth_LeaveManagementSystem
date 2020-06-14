@@ -7,8 +7,14 @@
         {% if user.user_type == 1 %}
             <h3>Select Your Mentor</h3>
             <form action="" method="post">
+                {% csrf_token %}
                 {{ form|crispy }}
+                <button class="btn-primary">Submit</button>
             </form>
+        {% endif %}
+
+        {% if user.user_type == 2 %}
+            <h3>Click Applications to see Applications</h3>
         {% endif %}
     </div>
 {% endblock home %}
